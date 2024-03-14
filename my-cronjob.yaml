@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-cronjob
+spec:
+  startingDeadlineSeconds: 200
+  concurrencyPolicy: Forbid
+  schedule: "*/1 * * * *" # 해당 객체는 apply 하자마자 pod가 생성되는 것은 아니다.
+  # 이 아래로는 Job 객체 스펙과 동일하다
+  jobTemplate:
+    metadata:
+      name: my-simple-job
+    spec:
+      activeDeadlineSeconds: 50
+      ttlSecondsAfterFinished: 10
+      parallelism: 3
+      completions: 3 # 반복할 횟수
+      backoffLimit: 3
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: my-job-container
+            image: busybox
+            command: ["sh", "-c", "sleep 10"]
+

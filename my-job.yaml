@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-simple-job
+spec:
+  activeDeadlineSeconds: 5
+  ttlSecondsAfterFinished: 10
+  parallelism: 1
+  completions: 3 # 반복할 횟수
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: my-job-container
+        image: busybox
+        command: ["sh", "-c", "sleep 100"]
+

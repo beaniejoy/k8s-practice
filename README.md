@@ -99,3 +99,25 @@ $ kubectl scale sts/redis-set --replicas=5
 $ kubectl scale sts/redis-set --replicas=2
 ```
 스케일을 5개로 늘렸다가 2개로 다시 줄이면 sts는 마지막 기준으로 2부터 생성되고 맨마지막부터 제거
+
+<br>
+
+## Job & CronJob
+
+- my-job.yaml
+- my-cronjob.yaml
+
+`activeDeadlineSeconds`은 해당 컨테이너의 실행 시간이 설정값 초과인 경우 timeout 종료 시킴  
+실제로 해당 설정값도 더 오래 Job 객체의 파드가 존재하게 되는 이유는 graceful shutdown 및 초기 생성 시간 등 때문에 더 오래 걸
+
+<br>
+
+## Configuration
+
+```shell
+$ kubectl exec env-test-pod -- printenv
+```
+exec를 통해 파드의 환경변수 print
+
+kube documentation에서 `downward` 검색 > Downward API에서 fieldRef로 가져올 수 있는 값들 확인 가능
+

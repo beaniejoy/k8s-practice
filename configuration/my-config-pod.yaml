@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-config-pod
+spec:
+  volumes:
+  - name: config-volume
+    configMap:
+      name: my-config
+      defaultMode: 0777
+      items:
+      - key: welcome-script
+        path: welcome.sh
+  containers:
+  - name: my-container
+    image: nginx
+    env:
+    - name: DB_HOST
+      valueFrom:
+        configMapKeyRef:
+          name: my-config
+          key: db_host
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: DB_PW
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config-files # container 내부에 해당 path에 config-volume에 지정한 파일을 집어넣겠다.
+

@@ -121,3 +121,26 @@ exec를 통해 파드의 환경변수 print
 
 kube documentation에서 `downward` 검색 > Downward API에서 fieldRef로 가져올 수 있는 값들 확인 가능
 
+```shell
+$ kubectl get pods -o wide
+$ kubectl get deploy my-deploy -o yaml
+```
+pod의 내용을 확장해서 더 많은 정보들과 같이 확인 가능
+yaml 파일 확인하고 싶을 때에도 사용 가능
+      
+```shell
+$ kubectl create secret generic db-info --from-literal=DB_PW=beanie
+```
+
+```shell
+$ kubectl get secret my-secret -o yaml
+$ echo [encoded_string] | base64 -d
+```
+yaml 파일 확인해서 base64 인코딩된 내용을 디코딩해서 볼 수 있다.
+
+`my-config-pod.yaml` 내용
+
+```shell
+$ kubectl exec my-config-pod -- cat /config-files/welcome.sh
+```
+volumeMounts path에 지정한 경로에 volume에 들어갔던 파일이 컨테이너에 들어가 있는 것 확인 가능

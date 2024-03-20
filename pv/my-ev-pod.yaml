@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-ev-pod
+spec:
+  volumes:
+  - name: upload-volume
+    emptyDir: {} # pod가 떠있을 때만 유효한 volume
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: upload-volume
+      mountPath: /tmp/uploads
+    

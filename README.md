@@ -144,3 +144,15 @@ yaml 파일 확인해서 base64 인코딩된 내용을 디코딩해서 볼 수 �
 $ kubectl exec my-config-pod -- cat /config-files/welcome.sh
 ```
 volumeMounts path에 지정한 경로에 volume에 들어갔던 파일이 컨테이너에 들어가 있는 것 확인 가능
+
+<br>
+
+## PV
+
+`my-storageclass.yaml` 참고  
+StorageClass의 `volumeBindingMode`가 `WaitForFirstConsumer`인 경우 pod에 해당 sc를 적용한 것이 생성될 때 pvc가 Bound 된다.  
+(dynamic pvc 생성만 하는 경우 pod 적용전이기에 pending 상태로 떠있게 된다.)
+
+StatefulSet에도 dynamic pvc를 적용할 수 있는데, 해당 spec에 `volumeClaimTemplates`를 가지고 설정할 수 있다.  
+그렇게 되면 해당 sts를 실제 적용할 때 pvc도 같이 새로 생성, replica 개수를 늘리면 그에 따라 pvc가 같이 생성  
+replica 개수를 줄여도 기존 생성되었던 pvc는 삭제안된다. 그래서 replica 개수를 줄였다 다시 늘리면 기존 pvc를 재활용하게 된다.

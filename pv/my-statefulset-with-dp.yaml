@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-dynamic-statefulset
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-dynamic-statefulset
+  template:
+    metadata:
+      labels:
+        app: my-dynamic-statefulset
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        volumeMounts:
+        - name: dynamic-volume
+          mountPath: /tmp/dynamic
+  # StatefuleSet이 생성될 때 아래 스펙에 따라 PVC도 자동생성
+  volumeClaimTemplates:
+  - metadata:
+      name: dynamic-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 100Mi
+

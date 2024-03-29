@@ -156,3 +156,31 @@ StorageClass의 `volumeBindingMode`가 `WaitForFirstConsumer`인 경우 pod에 �
 StatefulSet에도 dynamic pvc를 적용할 수 있는데, 해당 spec에 `volumeClaimTemplates`를 가지고 설정할 수 있다.  
 그렇게 되면 해당 sts를 실제 적용할 때 pvc도 같이 새로 생성, replica 개수를 늘리면 그에 따라 pvc가 같이 생성  
 replica 개수를 줄여도 기존 생성되었던 pvc는 삭제안된다. 그래서 replica 개수를 줄였다 다시 늘리면 기존 pvc를 재활용하게 된다.
+
+<br>
+
+## Network
+
+Pod안에 여러 개의 container가 있는 경우 특정 container에 대해 exec 명령 수행하는 경우
+
+```shell
+kubectl exec my-localhost-pod -c another-container -- curl localhost:80
+```
+
+Service 객체를 쿠베에 적용하면 endpoint slice가 자동으로 생성되는데 서비스는 endpoint slice 기준으로 라우팅을 해준다.  
+
+```shell
+kubectl get endpointslice
+NAME               ADDRESSTYPE   PORTS   ENDPOINTS                            AGE
+kubernetes         IPv4          6443    172.18.0.2                           23d
+my-service-hj8zr   IPv4          80      10.244.0.9,10.244.0.10,10.244.0.11   3m21s
+```
+위와 같이 나오는데 `ENDPOINTS`에 나오는 애들은 pod의 ip 주소라고 보면 된다. 
+
+`my-localhost-pod`의 nginx container에서 serivce를 호출하면 service에 연결된 deployment의 pod 중 하나가 응답하게 된다.
+
+ExternalName
+
+```shell
+kubectl exec my-localhost-pod -c another-container -- curl --header "Host: www.google.com" google-service
+```

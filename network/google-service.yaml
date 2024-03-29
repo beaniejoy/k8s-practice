@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: google-service
+spec:
+  type: ExternalName
+  externalName: google.com # 해당 ExternalName Service 호출하면 google.com을 호출하는 것과 같다.

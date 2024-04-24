@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-netpol
+  namespace: my-namespace # selector 사용하는데 같은 namespace여야 한다.
+spec:
+  podSelector:
+    matchLabels:
+      app: my-app
+  egress: # 대상이 되는 my-app의 pod의 나가는 방향 설정(outbound)
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: another-namespace
+

@@ -184,3 +184,22 @@ ExternalName
 ```shell
 kubectl exec my-localhost-pod -c another-container -- curl --header "Host: www.google.com" google-service
 ```
+
+<br>
+
+## namespace, NetworkPolicy 관련 내용
+
+```shell
+$ kubectl create namespace my-namespace
+$ kubectl create namespace your-namespace
+$ kubectl create namespace another-namespace
+```
+
+my-namespace의 my-nginx-pod에 들어가서 another, your namespace의 pod내 nginx 호출
+
+```shell
+$ kubectl -n my-namespace exec -it my-nginx-pod -- bash
+root@my-nginx-pod:/# curl another-nginx-service.another-namespace.svc.cluster.local:9080 
+root@my-nginx-pod:/# curl your-nginx-service.your-namespace.svc.cluster.local:9080
+```
+

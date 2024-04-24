@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-nginx-pod
+  namespace: my-namespace
+  labels:
+    app: my-app
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-another-nginx-pod
+  namespace: another-namespace
+  labels:
+    app: another-app
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-your-nginx-pod
+  namespace: your-namespace
+  labels:
+    app: your-app
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: another-nginx-service
+  namespace: another-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: another-app
+  ports:
+  - protocol: TCP
+    port: 9080
+    targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: your-nginx-service
+  namespace: your-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: your-app
+  ports:
+  - protocol: TCP
+    port: 9080
+    targetPort: 80
